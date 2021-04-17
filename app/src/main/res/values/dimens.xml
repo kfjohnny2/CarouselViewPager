@@ -2,7 +2,4 @@
 <resources>
     <dimen name="offset">30dp</dimen>
     <dimen name="pageMargin">30dp</dimen>
-
-    <dimen name="viewpager_default_side_item_visibility_width">100dp</dimen>
-    <dimen name="viewpager_current_item_horizontal_margins">42dp</dimen>
 </resources>
