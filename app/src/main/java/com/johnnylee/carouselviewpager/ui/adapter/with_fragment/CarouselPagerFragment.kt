@@ -89,7 +89,7 @@ class CarouselPagerFragment: Fragment() {
         viewPagerFragment.offscreenPageLimit = 1
         //TODO("When we create the layout components, maybe we should create multiple variants for the different types of page transformers? Or create just 1 and allow the user to input the desired transformer")
         //TODO("Additionally, we should pass direct values instead of the resources, to ease user's manipulation of these values")
-        viewPagerFragment.setPageTransformer(SimpleCarouselPageTransformer(resources))
+        viewPagerFragment.setPageTransformer(SimpleCarouselPageTransformer(context, R.dimen.viewpager_default_side_item_visibility_width, R.dimen.viewpager_current_item_horizontal_margins))
         //TODO("Same with the Item decorator inputs below")
         val itemDecoration = HorizontalMarginItemDecoration(context, R.dimen.viewpager_current_item_horizontal_margins)
         viewPagerFragment.addItemDecoration(itemDecoration)

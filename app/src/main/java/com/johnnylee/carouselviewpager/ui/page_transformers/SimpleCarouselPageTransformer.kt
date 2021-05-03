@@ -1,7 +1,9 @@
 package com.johnnylee.carouselviewpager.ui.page_transformers
 
+import android.content.Context
 import android.content.res.Resources
 import android.view.View
+import androidx.annotation.DimenRes
 import androidx.viewpager2.widget.ViewPager2
 import com.johnnylee.carouselviewpager.R
 import kotlin.math.abs
@@ -10,11 +12,21 @@ import kotlin.math.min
 private const val MIN_SCALE = 0.85f
 private const val MIN_ALPHA = 0.5f
 
-class SimpleCarouselPageTransformer(resources: Resources) : ViewPager2.PageTransformer {
+class SimpleCarouselPageTransformer(
+    private val sideItemVisibilityWidth: Float,
+    private val currentItemHorizontalMargins: Float
+) : ViewPager2.PageTransformer {
 
-    private val sideItemVisibilityWidth = resources.getDimension(R.dimen.viewpager_default_side_item_visibility_width)
-    private val currentItemHorizontalMargins = resources.getDimension(R.dimen.viewpager_current_item_horizontal_margins)
-    private val pageTranslationX = sideItemVisibilityWidth + currentItemHorizontalMargins
+    private val pageTranslationX get() = sideItemVisibilityWidth + currentItemHorizontalMargins
+
+    constructor(
+        context: Context,
+        @DimenRes sideItemVisibilityWidth: Int,
+        @DimenRes currentItemHorizontalMargins: Int
+    ) : this(
+        context.resources.getDimension(sideItemVisibilityWidth),
+        context.resources.getDimension(currentItemHorizontalMargins)
+    )
 
     override fun transformPage(page: View, position: Float) {
         page.apply {

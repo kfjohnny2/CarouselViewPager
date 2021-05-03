@@ -1,96 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".MainActivity">
-
-    <TextView
-        android:id="@+id/lblWithViewHolder"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:text="@string/main_with_viewholder_label"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/pager"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:clipToPadding="false"
-        android:clipChildren="false"
-        app:layout_constraintTop_toBottomOf="@id/lblWithViewHolder"
-        />
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/top_dashboard"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/pager">
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
 
         <TextView
-            android:id="@+id/textView"
-            android:layout_width="110dp"
-            android:layout_height="40dp"
-            android:gravity="center"
-            android:text="Fragment at: "
-            app:layout_constraintStart_toStartOf="@+id/hideBtn"
-            app:layout_constraintTop_toBottomOf="@+id/hideBtn" />
+            android:id="@+id/lblWithViewHolder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cornerBottomRight="@{20}"
+            app:cornerBottomLeft="@{20}"
+            app:backgroundRoundedColor="@{@color/colorPrimary}"
+            android:textSize="30sp"
+            android:text="@string/main_with_viewholder_label"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-        <EditText
-            android:id="@+id/editText"
-            android:layout_width="70dp"
-            android:layout_height="40dp"
-            android:inputType="number"
-            app:layout_constraintStart_toEndOf="@+id/textView"
-            app:layout_constraintTop_toTopOf="@+id/textView" />
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:clipToPadding="false"
+            android:clipChildren="false"
+            app:layout_constraintTop_toBottomOf="@id/lblWithViewHolder"
+            />
 
-        <Button
-            android:id="@+id/hideBtn"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            android:text="Hide"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/top_dashboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/pager">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="110dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="Fragment at: "
+                app:layout_constraintStart_toStartOf="@+id/hideBtn"
+                app:layout_constraintTop_toBottomOf="@+id/hideBtn" />
+
+            <EditText
+                android:id="@+id/editText"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:inputType="number"
+                app:layout_constraintStart_toEndOf="@+id/textView"
+                app:layout_constraintTop_toTopOf="@+id/textView" />
+
+            <Button
+                android:id="@+id/hideBtn"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                android:text="Hide"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/pager_fragment" />
+
+            <Button
+                android:id="@+id/addBtn"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:text="Add"
+                app:layout_constraintStart_toEndOf="@+id/hideBtn"
+                app:layout_constraintTop_toTopOf="@+id/hideBtn" />
+
+            <Button
+                android:id="@+id/updateBtn"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:text="Update"
+                app:layout_constraintStart_toEndOf="@+id/addBtn"
+                app:layout_constraintTop_toTopOf="@+id/addBtn" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/lblWithFragments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/main_with_fragments_label"
+            android:textSize="30sp"
+            app:layout_constraintTop_toBottomOf="@id/top_dashboard" />
+
+        <fragment
+            android:id="@+id/fragmentPager"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="330dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pager_fragment" />
-
-        <Button
-            android:id="@+id/addBtn"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="8dp"
-            android:text="Add"
-            app:layout_constraintStart_toEndOf="@+id/hideBtn"
-            app:layout_constraintTop_toTopOf="@+id/hideBtn" />
-
-        <Button
-            android:id="@+id/updateBtn"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="8dp"
-            android:text="Update"
-            app:layout_constraintStart_toEndOf="@+id/addBtn"
-            app:layout_constraintTop_toTopOf="@+id/addBtn" />
-
+            app:layout_constraintTop_toBottomOf="@+id/lblWithFragments"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/nav_graph"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <TextView
-        android:id="@+id/lblWithFragments"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/main_with_fragments_label"
-        android:textSize="30sp"
-        app:layout_constraintTop_toBottomOf="@id/top_dashboard" />
-
-    <fragment
-        android:id="@+id/fragmentPager"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="match_parent"
-        android:layout_height="330dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblWithFragments"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_graph"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

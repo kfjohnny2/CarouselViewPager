@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
         viewPager.adapter = carouselViewPagerAdapter
         viewPager.offscreenPageLimit = 1
 
-        val pageTransformer = SimpleCarouselPageTransformer(resources)
+        val pageTransformer = SimpleCarouselPageTransformer(this, R.dimen.viewpager_default_side_item_visibility_width, R.dimen.viewpager_current_item_horizontal_margins)
         viewPager.setPageTransformer(pageTransformer)
     }
 
