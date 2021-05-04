@@ -8,13 +8,12 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.johnnylee.carouselviewpager.R
 
-class BottomSheetHostFragment: BottomSheetDialogFragment() {
-
-    var displayFragment: Fragment? = null
+class BottomSheetHostFragment private constructor(private val displayFragment: Fragment, private val runnableOnCommit: Runnable = Runnable {  }): BottomSheetDialogFragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(fragment: Fragment? = null) = BottomSheetHostFragment().apply { displayFragment = fragment }
+        @JvmOverloads
+        fun newInstance(fragment: Fragment, runnable: Runnable = Runnable {  }) = BottomSheetHostFragment(fragment, runnable)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -22,19 +21,16 @@ class BottomSheetHostFragment: BottomSheetDialogFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setUpViews()
+        setContentFragment()
     }
 
-    private fun setUpViews() {
-
-        displayFragment?.let { fragment ->
+    private fun setContentFragment() {
+        displayFragment.let { fragment ->
             childFragmentManager
                 .beginTransaction()
                 .replace(R.id.bottomSheetHostFrameLayout, fragment)
-                .addToBackStack(null)
+                .runOnCommit(runnableOnCommit)
                 .commit()
         }
-
     }
 }
