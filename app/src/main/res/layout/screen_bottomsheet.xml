@@ -4,12 +4,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <data>
+        <variable name="bsFragment" type="com.johnnylee.carouselviewpager.ui.bottomsheets.BottomSheetHostFragment"/>
+    </data>
+
+    <!--<androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/parentCL"
         android:layout_width="match_parent"
-        android:layout_height="600dp"
-        app:backgroundRoundedColor="@{@color/white}"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        app:backgroundRoundedColor="@{@color/teal_200}"
         app:cornerTopLeft="@{50}"
         app:cornerTopRight="@{50}"
+        android:maxHeight="650dp">-->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/parentCL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        app:backgroundRoundedColor="@{bsFragment.customBackground.color}"
+        app:cornerTopLeft="@{bsFragment.customBackground.cornerTopLeft}"
+        app:cornerTopRight="@{bsFragment.customBackground.cornerTopRight}"
         android:maxHeight="650dp">
 
         <FrameLayout
