@@ -59,8 +59,17 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
 
     private fun setBottomSheet() {
         supportFragmentManager.let {
-            BottomSheetHostFragment.newInstance(CarouselPagerFragment()).apply { show(it, tag)  }
-            //BottomSheetHostFragment().apply { show(it, tag) }
+            val myBuilder = BottomSheetHostFragment.Builder()
+            myBuilder
+                .setHasCloseButton(false)
+                .setIsCancelable(false)
+
+            val mFragment =
+                BottomSheetHostFragment(CarouselPagerFragment())
+                    .setHasCloseButton(false)
+                    .setIsCancelable(false)
+                    .show(it, "MY TAG")
+            //.apply { show(it, tag)  }
         }
     }
 

@@ -1,24 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="600dp"
+        app:backgroundRoundedColor="@{@color/white}"
+        app:cornerTopLeft="@{50}"
+        app:cornerTopRight="@{50}"
+        android:maxHeight="650dp">
 
         <FrameLayout
             android:id="@+id/bottomSheetHostFrameLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxHeight="650dp"
-            app:backgroundRoundedColor="@{@color/black}"
-            app:cornerTopLeft="@{50}"
-            app:cornerTopRight="@{50}"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:layout_height="300dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/close_drawer"
+            android:tint="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="16dp"
+            android:alpha="0.6"
+            android:src="@drawable/ic_close"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
