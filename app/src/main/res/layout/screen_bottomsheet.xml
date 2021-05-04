@@ -6,27 +6,20 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#34000000">
+        android:background="@android:color/holo_red_dark">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <FrameLayout
+            android:id="@+id/bottomSheetHostFrameLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxHeight="650dp"
-            android:background="@color/white"
+            app:backgroundRoundedColor="@{@color/white}"
+            app:cornerTopLeft="@{50}"
+            app:cornerTopRight="@{50}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:layout_height="300dp">
-
-            <FrameLayout
-                android:id="@+id/bottomSheetHostFrameLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            tools:layout_height="300dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

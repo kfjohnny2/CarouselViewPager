@@ -12,9 +12,6 @@
             android:id="@+id/lblWithViewHolder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cornerBottomRight="@{20}"
-            app:cornerBottomLeft="@{20}"
-            app:backgroundRoundedColor="@{@color/colorPrimary}"
             android:textSize="30sp"
             android:text="@string/main_with_viewholder_label"
             app:layout_constraintTop_toTopOf="parent"/>

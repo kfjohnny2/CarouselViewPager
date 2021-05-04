@@ -6,8 +6,11 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
 import androidx.viewpager2.widget.ViewPager2
+import com.johnnylee.carouselviewpager.databinding.ActivityMainBinding
 import com.johnnylee.carouselviewpager.ui.adapter.CarouselViewPagerAdapter
 import com.johnnylee.carouselviewpager.ui.adapter.CarouselViewPagerViewHolder
 import com.johnnylee.carouselviewpager.ui.adapter.with_fragment.CarouselPagerFragment
@@ -20,12 +23,11 @@ import com.johnnylee.carouselviewpager.ui.utils.extensions.setBackgroundColorFro
 /**
  * @author Created by Johnnylee Rocha (kfjohnny2) on 4/16/2021.
  */
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), LifecycleOwner {
+    private lateinit var binding : ActivityMainBinding
 
     private val position
-        get() = if (editText.text.toString().isEmpty()) 0 else editText.text.toString().toInt()
-
-    private lateinit var editText: EditText
+        get() = if (binding.editText.text.toString().isEmpty()) 0 else binding.editText.text.toString().toInt()
 
     private val viewBinder = object: ICarouselViewBinder<String, CarouselViewPagerViewHolder> {
 
@@ -50,7 +52,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.lifecycleOwner = this
+
         setButtonListeners()
         setupCarouselAdapter()
         setBottomSheet()
@@ -58,22 +62,21 @@ class MainActivity : AppCompatActivity() {
 
     private fun setBottomSheet() {
         supportFragmentManager.let {
-            BottomSheetHostFragment.newInstance(CarouselPagerFragment()).apply { show(it, tag) }
+            BottomSheetHostFragment.newInstance(CarouselPagerFragment()).apply { show(it, tag)  }
             //BottomSheetHostFragment().apply { show(it, tag) }
         }
     }
 
     private fun setButtonListeners() {
-        editText = findViewById(R.id.editText)
-        findViewById<Button>(R.id.hideBtn).setOnClickListener {
+        binding.hideBtn.setOnClickListener {
             carouselViewPagerAdapter.hideItem(position)
             toast("Removing fragment at position $position")
         }
-        findViewById<Button>(R.id.addBtn).setOnClickListener {
+        binding.addBtn.setOnClickListener {
             carouselViewPagerAdapter.addItem(position, "Test fragment...")
             toast("Adding fragment at position $position")
         }
-        findViewById<Button>(R.id.updateBtn).setOnClickListener {
+        binding.updateBtn.setOnClickListener {
             carouselViewPagerAdapter.updateItem(position, "changed string")
             toast("Updated fragment at position $position")
         }
