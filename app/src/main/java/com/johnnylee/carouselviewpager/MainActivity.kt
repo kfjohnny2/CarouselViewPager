@@ -6,9 +6,12 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.johnnylee.carouselviewpager.ui.adapter.CarouselViewPagerAdapter
 import com.johnnylee.carouselviewpager.ui.adapter.CarouselViewPagerViewHolder
+import com.johnnylee.carouselviewpager.ui.adapter.with_fragment.CarouselPagerFragment
+import com.johnnylee.carouselviewpager.ui.bottomsheets.BottomSheetHostFragment
 import com.johnnylee.carouselviewpager.ui.carousel_items.views.ICarouselViewBinder
 import com.johnnylee.carouselviewpager.ui.page_transformers.SimpleCarouselPageTransformer
 import com.johnnylee.carouselviewpager.ui.utils.extensions.setBackgroundColorFromId
@@ -50,6 +53,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setButtonListeners()
         setupCarouselAdapter()
+        setBottomSheet()
+    }
+
+    private fun setBottomSheet() {
+        supportFragmentManager.let {
+            BottomSheetHostFragment.newInstance(CarouselPagerFragment()).apply { show(it, tag) }
+            //BottomSheetHostFragment().apply { show(it, tag) }
+        }
     }
 
     private fun setButtonListeners() {
