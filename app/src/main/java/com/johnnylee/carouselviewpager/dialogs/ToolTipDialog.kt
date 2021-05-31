@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable
 import android.view.*
 import android.widget.*
 import androidx.core.content.ContextCompat
+import com.johnnylee.carouselviewpager.R
 import com.johnnylee.carouselviewpager.dialogs.utils.ScreenUtils
 
 /**

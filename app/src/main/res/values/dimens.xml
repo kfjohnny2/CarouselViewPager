@@ -5,4 +5,17 @@
 
     <dimen name="viewpager_default_side_item_visibility_width">100dp</dimen>
     <dimen name="viewpager_current_item_horizontal_margins">42dp</dimen>
+
+
+    <dimen name="tooltip_dialog_activity_margin">16dp</dimen>
+    <dimen name="tooltip_dialog_background_padding">20dp</dimen>
+    <dimen name="tooltip_dialog_line_vertical_margin_small">8dp</dimen>
+    <dimen name="tooltip_dialog_line_vertical_margin_large">20dp</dimen>
+
+    <style name="tooltip_dialog_anaimation">
+        <item name="android:windowEnterAnimation">@anim/fade_in_animate_up</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+
+
 </resources>

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import com.johnnylee.carouselviewpager.databinding.ActivityMain2Binding
+import com.kcrimi.tooltipdialog.ToolTipDialog
 
 
 /**
@@ -18,6 +19,10 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main2)
+        ToolTipDialog(this, this)
+            .title("Example title")
+            .addPeekThroughView(binding.button)
+            .show()
     }
 
     //--------------- Helper methods ------------------
