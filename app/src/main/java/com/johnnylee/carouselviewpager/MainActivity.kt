@@ -1,5 +1,6 @@
 package com.johnnylee.carouselviewpager
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -19,10 +20,21 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main2)
-        ToolTipDialog(this, this)
-            .title("Example title")
-            .addPeekThroughView(binding.button)
-            .show()
+
+        binding.button.setOnClickListener {
+
+            val rect = Rect()
+            it.getGlobalVisibleRect(rect)
+
+            ToolTipDialog(this, this)
+                .title("Example title")
+                .pointTo()
+                .setYPosition(rect.bottom + 50)
+                .addPeekThroughView(it)
+                .show()
+        }
+
+
     }
 
     //--------------- Helper methods ------------------
