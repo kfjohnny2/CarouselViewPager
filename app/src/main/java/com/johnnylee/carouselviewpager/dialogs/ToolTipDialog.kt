@@ -3,11 +3,20 @@ package com.kcrimi.tooltipdialog
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
-import android.graphics.*
+import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
-import android.view.*
-import android.widget.*
+import android.view.View
+import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.johnnylee.carouselviewpager.R
 import com.johnnylee.carouselviewpager.dialogs.utils.ScreenUtils
@@ -37,12 +46,9 @@ import com.johnnylee.carouselviewpager.dialogs.utils.ScreenUtils
  * POSSIBLE IMPROVEMENT: It would be nice to figure out a way to find the window height minus the
  *  status bar height without having to pass in an activity
  */
-class ToolTipDialog(
-    parentActivity: Activity,
-    themeStyleRes: Int = R.style.TooltipDialogTheme // Optional custom theme
-) : Dialog(parentActivity, themeStyleRes) {
+class ToolTipDialog(parentActivity: Activity, themeStyleRes: Int = R.style.TooltipDialogTheme) : Dialog(parentActivity, themeStyleRes) {
     private val screenUtils = ScreenUtils
-    private var arrowWidth = screenUtils.getPixels(context, 15f)
+    private var arrowWidth = screenUtils.getPixels(15f)
     private var contentView : RelativeLayout
     private var container : ViewGroup
     private var upArrow : ImageView
@@ -61,6 +67,7 @@ class ToolTipDialog(
     private var content: String = ""
 
     init {
+
         setContentView(R.layout.tootip_dialog)
         contentView = findViewById(R.id.tooltip_dialog_content_view)
         container = findViewById(R.id.container)
@@ -74,7 +81,8 @@ class ToolTipDialog(
         val usableView = parentActivity.window.findViewById<View>(Window.ID_ANDROID_CONTENT)
         windowHeight = usableView.height
         windowWidth = usableView.width
-        statusBarHeight = screenUtils.getScreenHeight(context) - windowHeight
+        //statusBarHeight = screenUtils.getScreenHeight(context) - windowHeight
+        statusBarHeight = ScreenUtils.getSoftMenuHeight(context)
 
         // Make Dialog window span the entire screen
         window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT,
@@ -100,11 +108,13 @@ class ToolTipDialog(
         peekThroughViews.forEach {
             val viewBitmap = screenUtils.bitmapFromView(it)
             val xy = IntArray(2)
-            it.getLocationOnScreen(xy)
+            it.getLocationInWindow(xy)
 
+            val rect = Rect(0, 0, it.measuredWidth, it.measuredHeight)
             canvas.drawBitmap(viewBitmap,
-                Rect(0, 0, it.measuredWidth, it.measuredHeight),
-                Rect(xy[0], xy[1] - statusBarHeight, xy[0] + it.measuredWidth, xy[1] + it.measuredHeight -statusBarHeight),
+                rect,
+                Rect(xy[0], xy[1] - statusBarHeight, xy[0] + it.measuredWidth, xy[1] + it.measuredHeight - statusBarHeight),
+                //Rect(xy[0], xy[1], xy[0] + rect.width(), xy[1] + rect.height()),
                 null)
         }
 
@@ -158,7 +168,7 @@ class ToolTipDialog(
 
     private fun pointArrowTo(arrow: ImageView, x: Int) {
         val arrowParams = arrow.layoutParams as RelativeLayout.LayoutParams
-        if (x > windowWidth / 2) {
+        if (x >= windowWidth / 2) {
             arrowParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
             arrowParams.rightMargin = windowWidth - x - arrowWidth / 2
         } else {
@@ -180,8 +190,8 @@ class ToolTipDialog(
             rightMargin = 30f
         }
         val params = container.layoutParams as RelativeLayout.LayoutParams
-        params.leftMargin = screenUtils.getPixels(context, leftMargin)
-        params.rightMargin = screenUtils.getPixels(context, rightMargin)
+        params.leftMargin = screenUtils.getPixels(leftMargin)
+        params.rightMargin = screenUtils.getPixels(rightMargin)
         container.layoutParams = params
     }
 
