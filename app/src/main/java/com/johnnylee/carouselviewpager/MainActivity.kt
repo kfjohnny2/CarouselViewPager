@@ -30,7 +30,15 @@ class MainActivity : AppCompatActivity(), LifecycleOwner, View.OnClickListener {
         binding.button4.setOnClickListener(this)
         binding.button5.setOnClickListener(this)
         binding.button6.setOnClickListener(this)
-
+        binding.button7.setOnClickListener(this)
+        binding.button8.setOnClickListener(this)
+        binding.button9.setOnClickListener(this)
+        binding.button10.setOnClickListener(this)
+        binding.button11.setOnClickListener(this)
+        binding.button12.setOnClickListener(this)
+        binding.button13.setOnClickListener(this)
+        binding.button14.setOnClickListener(this)
+        binding.button15.setOnClickListener(this)
     }
 
     //--------------- Helper methods ------------------
@@ -46,14 +54,10 @@ class MainActivity : AppCompatActivity(), LifecycleOwner, View.OnClickListener {
 
             ToolTipDialog(this@MainActivity)
                 .title("Dialog can point up!")
-                .pointTo(
-                    location[0] + v.width / 2,
-                    location[1] + (v.height / 2) + ScreenUtils.getSoftMenuHeight(this@MainActivity),
-                    ToolTipDialog.Position.ABOVE
-                )
                 .content("This is pointing up to the button you just clicked")
                 .addPeekThroughView(v)
                 .subtitle("Tooltip with arrow")
+                .setYPosition(15000)
                 .show()
         }
     }
