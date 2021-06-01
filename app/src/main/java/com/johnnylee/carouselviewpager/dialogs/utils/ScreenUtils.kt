@@ -5,6 +5,7 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Point
+import android.graphics.Rect
 import android.view.View
 import android.view.WindowManager
 
@@ -19,14 +20,6 @@ internal object ScreenUtils {
 
     fun getPixels(dp: Float) = (dp * density).toInt()
 
-    fun getScreenHeight(context: Context): Int {
-        val wm =
-            context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val size = Point()
-        wm.defaultDisplay.getSize(size)
-        return size.y
-    }
-
     fun bitmapFromView(view: View): Bitmap {
         val bitmap = Bitmap.createBitmap(view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
@@ -39,6 +32,17 @@ internal object ScreenUtils {
         val resources: Resources = context.resources
         val resourceId: Int = resources.getIdentifier("navigation_bar_height", "dimen", "android")
         return if (resourceId > 0) resources.getDimensionPixelSize(resourceId) else 0
+    }
+
+    fun getViewPoint(view: View): Point {
+        val position = IntArray(2)
+        view.getLocationInWindow(position)
+        return Point(position[0], position[1])
+    }
+
+    fun getViewRect(view: View): Rect {
+        val point = getViewPoint(view)
+        return Rect(point.x, point.y, point.x + view.measuredWidth,point.y + view.measuredHeight)
     }
 
 }

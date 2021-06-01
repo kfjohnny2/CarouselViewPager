@@ -1,9 +1,7 @@
 package com.johnnylee.carouselviewpager
 
-import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
-import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -55,15 +53,18 @@ class MainActivity : AppCompatActivity(), LifecycleOwner, View.OnClickListener {
 
     override fun onClick(v: View?) {
         v?.run {
-            val location = intArrayOf(0, 0)
-            v.getLocationInWindow(location)
 
-            ToolTipDialog(this@MainActivity)
-                .title("Dialog can point up!")
-                .content("This is pointing up to the button you just clicked")
+            val screenUtils = ScreenUtils
+            val rect = screenUtils.getViewRect(v)
+
+            ToolTipDialog(this@MainActivity, R.layout.activity_main2)
+                .title(R.string.title)
+                .subtitle(R.string.sub_title)
+                .description(R.string.description)
                 .addPeekThroughView(v)
-                .subtitle("Tooltip with arrow")
-                .setYPosition(15000)
+                .runOnDismiss { toast("Dialog being dismissed") }
+                .setIsCancelable(false)
+                .pointToView(rect)
                 .show()
         }
     }

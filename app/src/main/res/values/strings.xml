@@ -2,4 +2,8 @@
     <string name="app_name">CarouselViewPager</string>
     <string name="main_with_viewholder_label">WITH VIEWHOLDER</string>
     <string name="main_with_fragments_label">WITH FRAGMENTS</string>
+
+    <string name="description">My random, quite large aeuaueaueua, descriptioooooooon</string>
+    <string name="title">My Randommmmm title</string>
+    <string name="sub_title">My Randommmmm subtitle</string>
 </resources>

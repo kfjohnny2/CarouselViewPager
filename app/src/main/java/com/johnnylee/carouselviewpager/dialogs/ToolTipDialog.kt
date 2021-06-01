@@ -1,6 +1,5 @@
 package com.kcrimi.tooltipdialog
 
-import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.res.Resources
@@ -9,11 +8,12 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.annotation.LayoutRes
+import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import com.johnnylee.carouselviewpager.R
 import com.johnnylee.carouselviewpager.dialogs.utils.ScreenUtils
@@ -43,7 +43,10 @@ import com.johnnylee.carouselviewpager.dialogs.utils.ScreenUtils
  * POSSIBLE IMPROVEMENT: It would be nice to figure out a way to find the window height minus the
  *  status bar height without having to pass in an activity
  */
-class ToolTipDialog(parentActivity: Activity, themeStyleRes: Int = R.style.TooltipDialogTheme) : Dialog(parentActivity, themeStyleRes) {
+class ToolTipDialog(context: Context, @LayoutRes layoutResource: Int = R.layout.tootip_dialog, themeStyleRes: Int = R.style.TooltipDialogTheme) : Dialog(context, themeStyleRes) {
+
+    enum class Position { AUTO, ABOVE, BELOW }
+
     private val screenUtils = ScreenUtils
     private var arrowWidth = screenUtils.getPixels(15f)
     private var contentView : RelativeLayout
@@ -51,45 +54,39 @@ class ToolTipDialog(parentActivity: Activity, themeStyleRes: Int = R.style.Toolt
     private var upArrow : ImageView
     private var downArrow : ImageView
     private var titleText : TextView
-    private var contentText : TextView
+    private var descriptionText : TextView
     private var subtitleText : TextView
     private var peekThroughViews = ArrayList<View>()
-    private var statusBarHeight: Int
-    private var toolTipListener: ToolTipListener? = null
 
-    private var subtitle: String = ""
-    private var title: String = ""
-    private var content: String = ""
+    private var canCancel: Boolean = true
 
     private val displayMetrics get() = Resources.getSystem().displayMetrics
 
     private val windowHeight get() = displayMetrics.heightPixels
     private val windowWidth get() = displayMetrics.widthPixels
 
-    init {
+    // General tooltip view. Can be used for extra control
+    val tooltipView get() = window?.decorView
 
-        setContentView(R.layout.tootip_dialog)
+    init {
+        setContentView(layoutResource)
         contentView = findViewById(R.id.tooltip_dialog_content_view)
         container = findViewById(R.id.container)
         upArrow = findViewById(R.id.tooltip_top_arrow)
         downArrow = findViewById(R.id.bottom_arrow)
         titleText = findViewById(R.id.title)
-        contentText = findViewById(R.id.tooltip_content)
+        descriptionText = findViewById(R.id.tooltip_content)
         subtitleText = findViewById(R.id.tooltip_subtitle)
 
-        statusBarHeight = ScreenUtils.getSoftMenuHeight(context)
-
-        // Make Dialog window span the entire screen
-        window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)
-        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-        container.setOnClickListener {
-            toolTipListener?.onClickToolTip()
-            dismiss()
+        if (canCancel) {
+            container.setOnClickListener { dismiss() }
+            contentView.setOnClickListener { dismiss() }
         }
 
-        contentView.setOnClickListener {
-            this.dismiss()
+        // Make Dialog window span the entire screen
+        window?.run {
+            setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)
+            setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }
     }
 
@@ -98,22 +95,17 @@ class ToolTipDialog(parentActivity: Activity, themeStyleRes: Int = R.style.Toolt
         super.show()
     }
 
+    //---------------------------- Helper methods ----------------------------
+
     private fun drawPeekingViews() {
         val bitmap = Bitmap.createBitmap(windowWidth, windowHeight, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         canvas.drawColor(ContextCompat.getColor(context, R.color.tooltip_background_shade_dark))
-        peekThroughViews.forEach {
-            val viewBitmap = screenUtils.bitmapFromView(it)
-
-            val position = IntArray(2)
-            it.getLocationInWindow(position)
-            val anchor = Point(position[0], position[1])
-
-            val rect = Rect(anchor.x, anchor.y, anchor.x + it.measuredWidth,anchor.y + it.measuredHeight)
+        peekThroughViews.forEach { view ->
+            val viewBitmap = screenUtils.bitmapFromView(view)
+            val rect = screenUtils.getViewRect(view)
             canvas.drawBitmap(viewBitmap,null, rect,null)
-
         }
-
         contentView.background = BitmapDrawable(context.resources, bitmap)
     }
 
@@ -124,43 +116,7 @@ class ToolTipDialog(parentActivity: Activity, themeStyleRes: Int = R.style.Toolt
         contentView.background = BitmapDrawable(context.resources, bitmap)
     }
 
-    /**
-     * Add views that will be drawn onto the dialog shade
-     */
-    fun addPeekThroughView(view : View) : ToolTipDialog {
-        peekThroughViews.add(view)
-        return this
-    }
 
-    /**
-     * Set the position on screen for the dialog arrow to point to.
-     * If Position is AUTO, this will set the dialog above
-     * the point if y is below the halfway mark and below the point if the point is above halfway.
-     */
-    fun pointTo(x: Int, y: Int, position: Position = Position.AUTO) : ToolTipDialog {
-        val params = container.layoutParams as RelativeLayout.LayoutParams
-
-        adjustContainerMargin(x)
-
-        if (position == Position.ABOVE || (position == Position.AUTO && y > windowHeight / 2 - statusBarHeight)) {
-            // point is on the lower half of the screen, position dialog above
-            params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
-            params.bottomMargin = windowHeight - y - statusBarHeight
-            if (x >= 0) {
-                pointArrowTo(downArrow, x)
-            }
-        } else {
-            // point is on the upper half of the screen, position dialog below
-            params.addRule(RelativeLayout.ALIGN_PARENT_TOP)
-            params.topMargin = y - statusBarHeight
-            if (x >= 0) {
-                pointArrowTo(upArrow, x)
-            }
-        }
-
-        container.layoutParams = params
-        return this
-    }
 
     private fun pointArrowTo(arrow: ImageView, x: Int) {
         val arrowParams = arrow.layoutParams as RelativeLayout.LayoutParams
@@ -191,44 +147,87 @@ class ToolTipDialog(parentActivity: Activity, themeStyleRes: Int = R.style.Toolt
         container.layoutParams = params
     }
 
+    //------------------------------ Fluent interface ------------------------------
+
+    // TODO("Add comment")
+    fun pointToView(rect: Rect, position: Position = Position.AUTO): ToolTipDialog {
+        val params = container.layoutParams as RelativeLayout.LayoutParams
+        adjustContainerMargin(rect.centerX())
+
+        if (position == Position.BELOW || ((rect.centerY() < windowHeight / 2) && position == Position.AUTO)) {
+            // When the view is above the mid point OR when Position.BELOW was forced
+            params.addRule(RelativeLayout.ALIGN_PARENT_TOP)
+            params.topMargin = rect.bottom
+            if (rect.centerX() >= 0) {
+                pointArrowTo(upArrow, rect.centerX())
+            }
+        } else {
+            // When the view in below the mid point OR when Position.ABOVE was forced
+            params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+            params.bottomMargin = windowHeight - rect.top
+            if (rect.centerX() >= 0) {
+                pointArrowTo(downArrow, rect.centerX())
+            }
+        }
+
+        container.layoutParams = params
+        return this
+    }
+
     /**
      * Sets the y position of the top of the dialog box. This will not use any arrow pointers
+     * @param y Position that will correspond to the top of the dialog
+     * @return  Instance of [ToolTipDialog]
      */
     fun setYPosition(y: Int) : ToolTipDialog {
         val params = container.layoutParams as RelativeLayout.LayoutParams
         params.addRule(RelativeLayout.ALIGN_PARENT_TOP)
-        params.topMargin = y - statusBarHeight
+        params.topMargin = y
         return this
     }
 
-    fun setToolTipListener(listener: ToolTipListener): ToolTipDialog {
-        toolTipListener = listener
+    /**
+     * Add views that will be drawn onto the dialog shade
+     * @param view  Add view to the peek through views' list
+     * @return  Instance of [ToolTipDialog]
+     */
+    fun addPeekThroughView(view : View) : ToolTipDialog {
+        peekThroughViews.add(view)
         return this
     }
 
-    fun subtitle(subtitle: String): ToolTipDialog {
-        subtitleText.text = subtitle
-        this.subtitle = subtitle
+    /**
+     * Allow/Forbid Dialog to be cancelled by clicking on it or outside
+     * @param isCancelable True to be cancelable, False otherwise
+     * @return  Instance of [ToolTipDialog]
+     */
+    fun setIsCancelable(isCancelable: Boolean): ToolTipDialog {
+        canCancel = isCancelable
         return this
     }
 
-    fun title(title: String): ToolTipDialog {
-        titleText.text = title
-        this.title = title
+    fun subtitle(@StringRes subtitle: Int): ToolTipDialog {
+        subtitleText.setText(subtitle)
         return this
     }
 
-    fun content(content: String): ToolTipDialog {
-        contentText.text = content
-        this.content = content
+    fun title(@StringRes title: Int): ToolTipDialog {
+        titleText.setText(title)
         return this
     }
 
-    interface ToolTipListener {
-        fun onClickToolTip()
+    fun description(@StringRes description: Int): ToolTipDialog {
+        descriptionText.setText(description)
+        return this
     }
 
-    enum class Position {
-        AUTO, ABOVE, BELOW
+    /**
+     * Run on Dialog dismissed
+     * @param onDismissFunc Function that will be ran on dialog dismissed
+     * @return  Instance of [ToolTipDialog]
+     */
+    fun runOnDismiss(onDismissFunc: () -> Unit): ToolTipDialog {
+        setOnDismissListener { onDismissFunc() }
+        return this
     }
 }

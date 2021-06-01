@@ -147,6 +147,8 @@
                 android:id="@+id/button15"
                 android:layout_width="150dp"
                 android:layout_height="50dp"
+                android:layout_marginEnd="-70dp"
+                android:layout_gravity="end"
                 android:text="Text ex"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
