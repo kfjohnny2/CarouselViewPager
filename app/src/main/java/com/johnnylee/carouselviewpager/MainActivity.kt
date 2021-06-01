@@ -26,9 +26,8 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
             val rect = Rect()
             it.getGlobalVisibleRect(rect)
 
-            ToolTipDialog(this, this)
+            ToolTipDialog(this)
                 .title("Example title")
-                .pointTo()
                 .setYPosition(rect.bottom + 50)
                 .addPeekThroughView(it)
                 .show()

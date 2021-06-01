@@ -38,10 +38,9 @@ import com.johnnylee.carouselviewpager.dialogs.utils.ScreenUtils
  *  status bar height without having to pass in an activity
  */
 class ToolTipDialog(
-    context: Context,
     parentActivity: Activity,
     themeStyleRes: Int = R.style.TooltipDialogTheme // Optional custom theme
-) : Dialog(context, themeStyleRes) {
+) : Dialog(parentActivity, themeStyleRes) {
     private val screenUtils = ScreenUtils
     private var arrowWidth = screenUtils.getPixels(context, 15f)
     private var contentView : RelativeLayout
