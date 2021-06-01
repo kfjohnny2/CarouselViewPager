@@ -4,10 +4,7 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Rect
+import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.view.View
@@ -57,14 +54,17 @@ class ToolTipDialog(parentActivity: Activity, themeStyleRes: Int = R.style.Toolt
     private var contentText : TextView
     private var subtitleText : TextView
     private var peekThroughViews = ArrayList<View>()
-    private var windowHeight: Int
-    private var windowWidth: Int
     private var statusBarHeight: Int
     private var toolTipListener: ToolTipListener? = null
 
     private var subtitle: String = ""
     private var title: String = ""
     private var content: String = ""
+
+    private val displayMetrics get() = Resources.getSystem().displayMetrics
+
+    private val windowHeight get() = displayMetrics.heightPixels
+    private val windowWidth get() = displayMetrics.widthPixels
 
     init {
 
@@ -77,23 +77,20 @@ class ToolTipDialog(parentActivity: Activity, themeStyleRes: Int = R.style.Toolt
         contentText = findViewById(R.id.tooltip_content)
         subtitleText = findViewById(R.id.tooltip_subtitle)
 
-        // Find the size of the application window
-        val usableView = parentActivity.window.findViewById<View>(Window.ID_ANDROID_CONTENT)
-        windowHeight = usableView.height
-        windowWidth = usableView.width
-        //statusBarHeight = screenUtils.getScreenHeight(context) - windowHeight
         statusBarHeight = ScreenUtils.getSoftMenuHeight(context)
 
         // Make Dialog window span the entire screen
-        window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.MATCH_PARENT)
+        window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)
         window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
         container.setOnClickListener {
             toolTipListener?.onClickToolTip()
             dismiss()
         }
+
         contentView.setOnClickListener {
-            this.dismiss() }
+            this.dismiss()
+        }
     }
 
     override fun show() {
@@ -107,15 +104,14 @@ class ToolTipDialog(parentActivity: Activity, themeStyleRes: Int = R.style.Toolt
         canvas.drawColor(ContextCompat.getColor(context, R.color.tooltip_background_shade_dark))
         peekThroughViews.forEach {
             val viewBitmap = screenUtils.bitmapFromView(it)
-            val xy = IntArray(2)
-            it.getLocationInWindow(xy)
 
-            val rect = Rect(0, 0, it.measuredWidth, it.measuredHeight)
-            canvas.drawBitmap(viewBitmap,
-                rect,
-                Rect(xy[0], xy[1] - statusBarHeight, xy[0] + it.measuredWidth, xy[1] + it.measuredHeight - statusBarHeight),
-                //Rect(xy[0], xy[1], xy[0] + rect.width(), xy[1] + rect.height()),
-                null)
+            val position = IntArray(2)
+            it.getLocationInWindow(position)
+            val anchor = Point(position[0], position[1])
+
+            val rect = Rect(anchor.x, anchor.y, anchor.x + it.measuredWidth,anchor.y + it.measuredHeight)
+            canvas.drawBitmap(viewBitmap,null, rect,null)
+
         }
 
         contentView.background = BitmapDrawable(context.resources, bitmap)

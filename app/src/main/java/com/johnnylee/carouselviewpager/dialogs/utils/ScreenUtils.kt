@@ -17,7 +17,7 @@ internal object ScreenUtils {
 
     private val density = Resources.getSystem().displayMetrics.density
 
-    fun getPixels(dp: Float) = (dp * density + 0.5f).toInt()
+    fun getPixels(dp: Float) = (dp * density).toInt()
 
     fun getScreenHeight(context: Context): Int {
         val wm =
@@ -28,7 +28,7 @@ internal object ScreenUtils {
     }
 
     fun bitmapFromView(view: View): Bitmap {
-        val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
+        val bitmap = Bitmap.createBitmap(view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         view.layout(view.left, view.top, view.right, view.bottom)
         view.draw(canvas)
@@ -40,4 +40,5 @@ internal object ScreenUtils {
         val resourceId: Int = resources.getIdentifier("navigation_bar_height", "dimen", "android")
         return if (resourceId > 0) resources.getDimensionPixelSize(resourceId) else 0
     }
+
 }
