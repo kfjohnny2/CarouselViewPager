@@ -64,6 +64,9 @@ class ToolTipDialog(context: Context, @LayoutRes layoutResource: Int = R.layout.
     private val windowHeight get() = displayMetrics.heightPixels
     private val windowWidth get() = displayMetrics.widthPixels
 
+    private var modifyViewFunc: ((View) -> Unit)? = null
+    private var restoreViewFunc: ((View) -> Unit)? = null
+
     // General tooltip view. Can be used for extra control
     val tooltipView get() = window?.decorView
 
@@ -102,8 +105,12 @@ class ToolTipDialog(context: Context, @LayoutRes layoutResource: Int = R.layout.
         val canvas = Canvas(bitmap)
         canvas.drawColor(ContextCompat.getColor(context, R.color.tooltip_background_shade_dark))
         peekThroughViews.forEach { view ->
+            // Call function to modify the View
+            modifyViewFunc?.invoke(view)
             val viewBitmap = ScreenUtils.bitmapFromView(view)
             val rect = ScreenUtils.getViewRect(view)
+            // Call function to restore the View
+            restoreViewFunc?.invoke(view)
             canvas.drawBitmap(viewBitmap,null, rect,null)
         }
         contentView.background = BitmapDrawable(context.resources, bitmap)
@@ -236,6 +243,26 @@ class ToolTipDialog(context: Context, @LayoutRes layoutResource: Int = R.layout.
      */
     fun runOnDismiss(onDismissFunc: () -> Unit): ToolTipDialog {
         setOnDismissListener { onDismissFunc() }
+        return this
+    }
+
+    /**
+     * Modify the view before creating the bitmap, that will be shown in front of the actual View
+     * @param modifyViewFunc    Function that will be ran before creating the bitmap
+     * @return  Instance of [ToolTipDialog]
+     */
+    fun modifyView(modifyViewFunc: (View) -> Unit): ToolTipDialog {
+        this.modifyViewFunc = modifyViewFunc
+        return this
+    }
+
+    /**
+     * Restore the view before creating the bitmap, that will be shown in front of the actual View
+     * @param restoreViewFunc    Function that will be ran before creating the bitmap
+     * @return  Instance of [ToolTipDialog]
+     */
+    fun restoreView(restoreViewFunc: (View) -> Unit): ToolTipDialog {
+        this.restoreViewFunc = restoreViewFunc
         return this
     }
 }
