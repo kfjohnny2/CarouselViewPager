@@ -25,7 +25,14 @@ import com.johnnylee.carouselviewpager.dialogs.utils.ScreenUtils
  * A dialog with a dialog box and an arrow to be used to point out different parts of the underlying
  * UI. PeekThroughViews can be passed in from the underlying view as well in order to draw them
  * onto a background bitmap of the the Dialog which gives the appearance of those views "peeking
- * through" the bg shade
+ * through" the bg shade.
+ * A custom layout can be inserted into this Dialog, however it must have the following IDs
+ * tooltip_background_view - The outer section of the dialog. It must be a RelativeLayout;
+ * tooltip_dialog_container - The parent view of the Dialog itself;
+ * tooltip_title - The title TextView;
+ * tooltip_description - The description TextView;
+ * tooltip_top_arrow - The Arrow ImageView that will be used when pointing upwards;
+ * tooltip_bottom_arrow - The Arrow ImageView that will be used when pointing downwards;
  *
  * Example Usage:
  *  val viewRect = ScreenUtils.getViewRect(view)
@@ -41,15 +48,13 @@ class ToolTipDialog(context: Context, @LayoutRes layoutResource: Int = R.layout.
 
     enum class Position { AUTO, ABOVE, BELOW }
 
-    private val screenUtils = ScreenUtils
-    private var arrowWidth = screenUtils.getPixels(15f)
+    private var arrowWidth = ScreenUtils.getPixels(15f)
     private var contentView : RelativeLayout
     private var container : ViewGroup
     private var upArrow : ImageView
     private var downArrow : ImageView
     private var titleText : TextView
     private var descriptionText : TextView
-    private var subtitleText : TextView
     private var peekThroughViews = ArrayList<View>()
 
     private var canCancel: Boolean = true
@@ -63,14 +68,14 @@ class ToolTipDialog(context: Context, @LayoutRes layoutResource: Int = R.layout.
     val tooltipView get() = window?.decorView
 
     init {
+
         setContentView(layoutResource)
-        contentView = findViewById(R.id.tooltip_dialog_content_view)
-        container = findViewById(R.id.container)
+        contentView = findViewById(R.id.tooltip_background_view)
+        container = findViewById(R.id.tooltip_dialog_container)
         upArrow = findViewById(R.id.tooltip_top_arrow)
-        downArrow = findViewById(R.id.bottom_arrow)
-        titleText = findViewById(R.id.title)
-        descriptionText = findViewById(R.id.tooltip_content)
-        subtitleText = findViewById(R.id.tooltip_subtitle)
+        downArrow = findViewById(R.id.tooltip_bottom_arrow)
+        titleText = findViewById(R.id.tooltip_title)
+        descriptionText = findViewById(R.id.tooltip_description)
 
         if (canCancel) {
             container.setOnClickListener { dismiss() }
@@ -96,8 +101,8 @@ class ToolTipDialog(context: Context, @LayoutRes layoutResource: Int = R.layout.
         val canvas = Canvas(bitmap)
         canvas.drawColor(ContextCompat.getColor(context, R.color.tooltip_background_shade_dark))
         peekThroughViews.forEach { view ->
-            val viewBitmap = screenUtils.bitmapFromView(view)
-            val rect = screenUtils.getViewRect(view)
+            val viewBitmap = ScreenUtils.bitmapFromView(view)
+            val rect = ScreenUtils.getViewRect(view)
             canvas.drawBitmap(viewBitmap,null, rect,null)
         }
         contentView.background = BitmapDrawable(context.resources, bitmap)
@@ -109,8 +114,6 @@ class ToolTipDialog(context: Context, @LayoutRes layoutResource: Int = R.layout.
         canvas.drawColor(ContextCompat.getColor(context, R.color.tooltip_background_shade_default))
         contentView.background = BitmapDrawable(context.resources, bitmap)
     }
-
-
 
     private fun pointArrowTo(arrow: ImageView, x: Int) {
         val arrowParams = arrow.layoutParams as RelativeLayout.LayoutParams
@@ -136,14 +139,13 @@ class ToolTipDialog(context: Context, @LayoutRes layoutResource: Int = R.layout.
             rightMargin = 30f
         }
         val params = container.layoutParams as RelativeLayout.LayoutParams
-        params.leftMargin = screenUtils.getPixels(leftMargin)
-        params.rightMargin = screenUtils.getPixels(rightMargin)
+        params.leftMargin = ScreenUtils.getPixels(leftMargin)
+        params.rightMargin = ScreenUtils.getPixels(rightMargin)
         container.layoutParams = params
     }
 
     //------------------------------ Fluent interface ------------------------------
 
-    // TODO("Add comment")
     /**
      * Point arrow to a given rect. If [position] is set to [Position.BELOW], the Dialog will show
      * up below the target rect, pointing to the Bottom part of the rect. If the [position] is set
@@ -207,11 +209,6 @@ class ToolTipDialog(context: Context, @LayoutRes layoutResource: Int = R.layout.
      */
     fun setIsCancelable(isCancelable: Boolean): ToolTipDialog {
         canCancel = isCancelable
-        return this
-    }
-
-    fun subtitle(@StringRes subtitle: Int): ToolTipDialog {
-        subtitleText.setText(subtitle)
         return this
     }
 

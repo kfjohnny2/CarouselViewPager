@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data></data>
 
@@ -18,141 +16,123 @@
             android:gravity="center_horizontal">
 
             <Button
+                android:id="@+id/button15"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_gravity="start"
+                android:layout_marginStart="-50dp"
+                android:text="Text ex" />
+
+            <Button
+                android:id="@+id/button14"
+                android:layout_width="150dp"
+                android:text="Text ex"
+                android:layout_gravity="start"
+                android:layout_marginStart="-25dp"
+                android:layout_height="50dp" />
+
+            <Button
                 android:id="@+id/button"
                 android:layout_width="150dp"
                 android:layout_height="50dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                android:layout_gravity="start"
                 android:text="Text ex"/>
 
             <Button
                 android:id="@+id/button2"
                 android:layout_width="150dp"
                 android:layout_height="50dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:text="Text ex"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_gravity="start"
+                android:layout_marginStart="25dp"
+                android:text="Text ex"/>
 
             <Button
                 android:id="@+id/button3"
                 android:layout_width="150dp"
                 android:layout_height="50dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 android:text="Text ex"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_gravity="start"
+                android:layout_marginStart="50dp"/>
 
             <Button
                 android:id="@+id/button4"
                 android:layout_width="150dp"
                 android:layout_height="50dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:text="Text ex"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_gravity="start"
+                android:layout_marginStart="75dp"
+                android:text="Text ex"/>
 
             <Button
                 android:id="@+id/button5"
                 android:layout_width="150dp"
                 android:layout_height="50dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:text="Text ex"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_gravity="start"
+                android:layout_marginStart="100dp"
+                android:text="Text ex"/>
 
             <Button
                 android:id="@+id/button6"
                 android:layout_width="150dp"
                 android:layout_height="50dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:text="Text ex"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_gravity="start"
+                android:layout_marginStart="125dp"
+                android:text="Text ex"/>
 
             <Button
                 android:id="@+id/button7"
                 android:layout_width="150dp"
                 android:layout_height="50dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:text="Text ex"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_gravity="start"
+                android:layout_marginStart="150dp"
+                android:text="Text ex"/>
 
             <Button
                 android:id="@+id/button8"
                 android:layout_width="150dp"
                 android:layout_height="50dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:text="Text ex"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_gravity="start"
+                android:layout_marginStart="175dp"
+                android:text="Text ex"/>
 
             <Button
                 android:id="@+id/button9"
                 android:layout_width="150dp"
                 android:layout_height="50dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:text="Text ex"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_gravity="start"
+                android:layout_marginStart="200dp"
+                android:text="Text ex"/>
 
             <Button
                 android:id="@+id/button10"
                 android:layout_width="150dp"
                 android:layout_height="50dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:text="Text ex"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_gravity="start"
+                android:layout_marginStart="225dp"
+                android:text="Text ex" />
 
             <Button
                 android:id="@+id/button11"
                 android:layout_width="150dp"
                 android:layout_height="50dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:text="Text ex"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_gravity="start"
+                android:layout_marginStart="250dp"
+                android:text="Text ex"/>
 
             <Button
                 android:id="@+id/button12"
                 android:layout_width="150dp"
                 android:layout_height="50dp"
-                android:text="Text ex"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_gravity="start"
+                android:layout_marginStart="275dp"
+                android:text="Text ex"/>
 
             <Button
                 android:id="@+id/button13"
                 android:layout_width="150dp"
                 android:layout_height="50dp"
-                android:text="Text ex"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/button14"
-                android:layout_width="150dp"
-                android:text="Text ex"
-                android:layout_height="50dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/button15"
-                android:layout_width="150dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="-70dp"
-                android:layout_gravity="end"
-                android:text="Text ex"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_gravity="start"
+                android:layout_marginStart="300dp"
+                android:text="Text ex" />
 
         </LinearLayout>
 

@@ -24,17 +24,17 @@
             android:layout_below="@id/tooltip_top_arrow"
             android:orientation="vertical"
             android:background="@drawable/tooltip_dialog_background"
-            android:padding="@dimen/tooltip_dialog_background_padding"
+            android:padding="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/tooltip_subtitle"
-                style="?toolTipDialog.subtitleTextStyle"
-                tools:text="Subtitle goes here!"
-                android:layout_marginBottom="@dimen/tooltip_dialog_line_vertical_margin_small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Layout 2"
+                android:textSize="20sp"
+                android:textAlignment="center"
+                android:layout_marginBottom="10dp"/>
 
             <TextView
                 android:id="@+id/tooltip_title"
@@ -42,6 +42,7 @@
                 tools:text="This is where your Header Goes!"
                 android:layout_marginBottom="@dimen/tooltip_dialog_line_vertical_margin_small"
                 android:layout_width="wrap_content"
+                android:textStyle="bold"
                 android:layout_height="wrap_content"/>
 
             <TextView

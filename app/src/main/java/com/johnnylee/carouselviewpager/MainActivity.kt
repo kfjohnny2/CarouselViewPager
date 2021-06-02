@@ -54,12 +54,11 @@ class MainActivity : AppCompatActivity(), LifecycleOwner, View.OnClickListener {
     override fun onClick(v: View?) {
         v?.run {
 
-            val screenUtils = ScreenUtils
-            val rect = screenUtils.getViewRect(v)
+            val rect = ScreenUtils.getViewRect(v)
 
-            ToolTipDialog(this@MainActivity, R.layout.activity_main2)
+            //ToolTipDialog(this@MainActivity) // Default layout
+            ToolTipDialog(this@MainActivity, R.layout.test_tooltip_dialog) // Custom layout
                 .title(R.string.title)
-                .subtitle(R.string.sub_title)
                 .description(R.string.description)
                 .addPeekThroughView(v)
                 .runOnDismiss { toast("Dialog being dismissed") }
