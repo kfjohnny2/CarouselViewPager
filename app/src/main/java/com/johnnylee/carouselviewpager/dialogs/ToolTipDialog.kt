@@ -1,4 +1,4 @@
-package com.kcrimi.tooltipdialog
+package com.johnnylee.carouselviewpager.dialogs
 
 import android.app.Dialog
 import android.content.Context
@@ -20,8 +20,7 @@ import com.johnnylee.carouselviewpager.dialogs.utils.ScreenUtils
 
 /**
  * Copyright (c) $today.year.
- * Created by Kevin Crimi as part of the ToolTipDialog library published for free usage as determined by the Apache 2.0 license.
- * https://github.com/kcrimi/ToolTipDialog
+ * Created by Rafael Ramos e Johnnylee Rocha
  *
  * A dialog with a dialog box and an arrow to be used to point out different parts of the underlying
  * UI. PeekThroughViews can be passed in from the underlying view as well in order to draw them
@@ -29,19 +28,14 @@ import com.johnnylee.carouselviewpager.dialogs.utils.ScreenUtils
  * through" the bg shade
  *
  * Example Usage:
- *
- *  ToolTipDialog toolTipDialog = new ToolTipDialog(getContext(), getActivity());
- *  int[] location = new int[2];
- *  View targetView = getContentView().findViewById(R.id.target_view_id);
- *  targetView.getLocationInWindow(location);
- *  toolTipDialog
- *      .pointTo(location[0] + targetView.getWidth() / 2, location[1] + targetView.getHeight())
+ *  val viewRect = ScreenUtils.getViewRect(view)
+ *  ToolTipDialog(getActivity())
+ *      .pointToView(viewRect)
+ *      .description(R.id.my_example_description_resource
  *      .addPeekThroughView(targetView)
  *      .addPeekThroughView(otherView)
+ *      .runOnDismiss { Toast.makeText(context, "Dialog being dismissed", Toast.LENGHT_LONG).show() }
  *      .show();
- *
- * POSSIBLE IMPROVEMENT: It would be nice to figure out a way to find the window height minus the
- *  status bar height without having to pass in an activity
  */
 class ToolTipDialog(context: Context, @LayoutRes layoutResource: Int = R.layout.tootip_dialog, themeStyleRes: Int = R.style.TooltipDialogTheme) : Dialog(context, themeStyleRes) {
 
@@ -150,6 +144,16 @@ class ToolTipDialog(context: Context, @LayoutRes layoutResource: Int = R.layout.
     //------------------------------ Fluent interface ------------------------------
 
     // TODO("Add comment")
+    /**
+     * Point arrow to a given rect. If [position] is set to [Position.BELOW], the Dialog will show
+     * up below the target rect, pointing to the Bottom part of the rect. If the [position] is set
+     * to [Position.ABOVE], the Dialog will show up above the target rect, pointing to the Top part
+     * of the rect. If no [Position], or [Position.AUTO] is selected the Dialog position will be
+     * shown according to the rect's position on the screen.
+     * @param rect      Target rect that will be pointed to
+     * @param position  [Position] that can be used to force the Dialog to be shown above or below target
+     * @return  Instance of [ToolTipDialog]
+     */
     fun pointToView(rect: Rect, position: Position = Position.AUTO): ToolTipDialog {
         val params = container.layoutParams as RelativeLayout.LayoutParams
         adjustContainerMargin(rect.centerX())

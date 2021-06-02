@@ -9,7 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import com.johnnylee.carouselviewpager.databinding.ActivityMain2Binding
 import com.johnnylee.carouselviewpager.dialogs.utils.ScreenUtils
-import com.kcrimi.tooltipdialog.ToolTipDialog
+import com.johnnylee.carouselviewpager.dialogs.ToolTipDialog
 
 
 /**
