@@ -87,6 +87,7 @@ class ToolTipDialog(context: Context, @LayoutRes layoutResource: Int = R.layout.
             setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)
             setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }
+
     }
 
     override fun show() {
@@ -213,12 +214,18 @@ class ToolTipDialog(context: Context, @LayoutRes layoutResource: Int = R.layout.
     }
 
     fun title(@StringRes title: Int): ToolTipDialog {
-        titleText.setText(title)
+        with (titleText) {
+            setText(title)
+            visibility = View.VISIBLE
+        }
         return this
     }
 
     fun description(@StringRes description: Int): ToolTipDialog {
-        descriptionText.setText(description)
+        with (descriptionText) {
+            setText(description)
+            visibility = View.VISIBLE
+        }
         return this
     }
 
